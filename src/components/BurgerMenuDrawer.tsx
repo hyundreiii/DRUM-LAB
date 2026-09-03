@@ -167,6 +167,39 @@ export const BurgerMenuDrawer: React.FC<BurgerMenuDrawerProps> = ({
 
             {/* Middle Nav Items & Quick Sound Kit Selector */}
             <div className="flex-1 overflow-y-auto p-3 space-y-4">
+              {/* High-visibility Install on Android CTA Card */}
+              <div className="p-3 rounded-2xl bg-gradient-to-r from-emerald-950 via-neutral-900 to-emerald-950 border border-emerald-500/50 shadow-lg">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-1.5">
+                    <span className="p-1 rounded-lg bg-emerald-500 text-black">
+                      <Smartphone className="w-3.5 h-3.5 stroke-[2.5]" />
+                    </span>
+                    <span className="text-xs font-black text-white">Android Application</span>
+                  </div>
+                  <span className="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-mono font-bold border border-emerald-500/30">
+                    PWA / APK
+                  </span>
+                </div>
+                <p className="text-[11px] text-neutral-300 leading-tight mb-2.5">
+                  Install directly on your phone with zero latency and full-screen immersive mode.
+                </p>
+                <button
+                  id="drawer-top-install-btn"
+                  onClick={() => {
+                    onClose();
+                    if (onTriggerInstallPwa) {
+                      onTriggerInstallPwa();
+                    } else if (onOpenAndroidHub) {
+                      onOpenAndroidHub();
+                    }
+                  }}
+                  className="w-full py-2 px-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-black text-xs flex items-center justify-center gap-1.5 shadow-md shadow-emerald-500/30 transition-all active:scale-95 animate-pulse"
+                >
+                  <Download className="w-3.5 h-3.5 stroke-[3]" />
+                  <span>Install Real Drum on Android</span>
+                </button>
+              </div>
+
               {/* Main Views Navigation */}
               <div className="space-y-1">
                 <div className="px-2 text-[10px] font-bold text-neutral-500 uppercase tracking-wider font-mono mb-1">

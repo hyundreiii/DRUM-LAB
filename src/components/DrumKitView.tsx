@@ -7,7 +7,7 @@ import { addBeatsToStats, loadCustomLayout, saveCustomLayout, resetCustomLayout,
 import { 
   Volume2, Music, Settings as SettingsIcon, Square, Sparkles, Sliders, 
   RotateCcw, Maximize2, Minimize2, Move, Grid, Check, Disc, 
-  ChevronDown, ZoomIn, ZoomOut, Zap, Eye, Menu
+  ChevronDown, ZoomIn, ZoomOut, Zap, Eye, Menu, Download, Smartphone
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -18,6 +18,8 @@ interface DrumKitViewProps {
   onOpenPractice: () => void;
   onOpenSettings: () => void;
   onOpenMetronome: () => void;
+  onOpenAndroidHub?: () => void;
+  onTriggerInstallPwa?: () => void;
   isMetronomePlaying: boolean;
   metronomeBpm: number;
   highlightedPadId?: DrumPadId | null;
@@ -35,6 +37,8 @@ export const DrumKitView: React.FC<DrumKitViewProps> = ({
   onOpenPractice,
   onOpenSettings,
   onOpenMetronome,
+  onOpenAndroidHub,
+  onTriggerInstallPwa,
   isMetronomePlaying,
   metronomeBpm,
   highlightedPadId = null,
@@ -506,6 +510,17 @@ export const DrumKitView: React.FC<DrumKitViewProps> = ({
 
         {/* Right Action Icons: Layout Toggle & Tools */}
         <div className="flex items-center gap-1.5">
+          {/* Direct Install on Android button */}
+          <button
+            id="header-install-android-btn"
+            onClick={onTriggerInstallPwa || onOpenAndroidHub}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs shadow-md shadow-emerald-500/30 transition-all active:scale-95 animate-pulse shrink-0 cursor-pointer"
+            title="Install Real Drum on Android Phone"
+          >
+            <Download className="w-3.5 h-3.5 text-black stroke-[3]" />
+            <span className="inline font-bold">Install App</span>
+          </button>
+
           {/* Custom layout mode toggle */}
           <button
             id="edit-layout-btn"

@@ -193,6 +193,7 @@ export default function App() {
       onAndroidBack={handleAndroidBack}
       onAndroidHome={handleAndroidHome}
       onOpenAndroidInfo={() => setIsApkModalOpen(true)}
+      onTriggerInstallPwa={handleTriggerInstallPwa}
       isMetronomePlaying={isMetronomePlaying}
       onToast={showToast}
     >
@@ -301,6 +302,8 @@ export default function App() {
               }}
               onOpenSettings={() => setIsSettingsOpen(true)}
               onOpenMetronome={() => setIsMetronomeModalOpen(true)}
+              onOpenAndroidHub={() => setIsApkModalOpen(true)}
+              onTriggerInstallPwa={handleTriggerInstallPwa}
               isMetronomePlaying={isMetronomePlaying}
               metronomeBpm={metronomeBpm}
               highlightedPadId={highlightedPadId}

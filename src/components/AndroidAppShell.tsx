@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Wifi, Battery, RotateCcw, Smartphone, Maximize2, Minimize2, 
-  ArrowLeft, Circle, Square, SmartphoneCharging, Layers, Info
+  ArrowLeft, Circle, Square, SmartphoneCharging, Layers, Info, Download, X
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -10,6 +10,7 @@ interface AndroidAppShellProps {
   onAndroidBack: () => void;
   onAndroidHome: () => void;
   onOpenAndroidInfo: () => void;
+  onTriggerInstallPwa?: () => void;
   isRecording?: boolean;
   isMetronomePlaying?: boolean;
   onToast?: (message: string) => void;
@@ -20,6 +21,7 @@ export const AndroidAppShell: React.FC<AndroidAppShellProps> = ({
   onAndroidBack,
   onAndroidHome,
   onOpenAndroidInfo,
+  onTriggerInstallPwa,
   isRecording,
   isMetronomePlaying,
   onToast,
@@ -47,6 +49,8 @@ export const AndroidAppShell: React.FC<AndroidAppShellProps> = ({
     return () => clearInterval(interval);
   }, []);
 
+  const [showInstallBanner, setShowInstallBanner] = useState(true);
+
   // Detect mobile screen width on mount: if on actual phone (<768px), auto switch to fullscreen
   useEffect(() => {
     if (typeof window !== 'undefined' && window.innerWidth < 768) {
@@ -68,48 +72,49 @@ export const AndroidAppShell: React.FC<AndroidAppShellProps> = ({
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-neutral-950 flex flex-col items-center justify-center select-none font-sans">
-      {/* Outer Floating Android Utility Bar (desktop / tablet context) */}
+      {/* Outer Floating Android Utility Bar (accessible on all screen sizes) */}
       {displayMode === 'frame' && (
-        <div className="absolute top-2 z-40 hidden md:flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-neutral-900/90 border border-neutral-800 shadow-xl backdrop-blur-md text-xs">
+        <div className="absolute top-2 z-40 flex flex-wrap items-center justify-center gap-1.5 px-3 py-1.5 rounded-2xl bg-neutral-900/95 border border-neutral-800 shadow-2xl backdrop-blur-md text-xs max-w-[95vw]">
           <div className="flex items-center gap-1.5 text-neutral-300 font-bold pr-2 border-r border-neutral-700">
             <Smartphone className="w-4 h-4 text-emerald-400" />
-            <span className="font-mono text-[11px]">Android OS 15</span>
+            <span className="font-mono text-[11px]">Android 15</span>
           </div>
+
+          <button
+            id="shell-install-android-btn"
+            onClick={onTriggerInstallPwa || onOpenAndroidInfo}
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs shadow-lg shadow-emerald-500/30 transition-all active:scale-95 animate-pulse"
+            title="Install Real Drum on Android Phone"
+          >
+            <Download className="w-3.5 h-3.5 text-black stroke-[3]" />
+            <span>Install on Android</span>
+          </button>
 
           <button
             id="shell-toggle-orientation"
             onClick={toggleOrientation}
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-amber-300 font-bold text-[11px] transition-all active:scale-95"
+            className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-amber-300 font-bold text-[11px] transition-all active:scale-95"
             title="Toggle between Landscape (best for wide drumming) and Portrait mode"
           >
             <RotateCcw className="w-3.5 h-3.5" />
-            <span>Rotate {orientation === 'landscape' ? 'Portrait' : 'Landscape'}</span>
-          </button>
-
-          <button
-            id="shell-toggle-nav-style"
-            onClick={() => setNavStyle((prev) => (prev === 'buttons' ? 'gesture' : 'buttons'))}
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-300 font-medium text-[11px] transition-all"
-            title="Switch Android Navigation Bar (3-Button or Gesture Pill)"
-          >
-            <Layers className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Nav: {navStyle === 'buttons' ? '3-Button' : 'Gesture'}</span>
+            <span className="hidden sm:inline">Rotate {orientation === 'landscape' ? 'Portrait' : 'Landscape'}</span>
+            <span className="sm:hidden">Rotate</span>
           </button>
 
           <button
             id="shell-open-apk-info"
             onClick={onOpenAndroidInfo}
-            className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/40 font-bold text-[11px] transition-all"
-            title="Android APK details & direct install"
+            className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-emerald-400 border border-emerald-500/30 font-bold text-[11px] transition-all"
+            title="Android APK details, WebAPK & QR Code"
           >
             <Info className="w-3.5 h-3.5" />
-            <span>APK Hub</span>
+            <span>APK / QR</span>
           </button>
 
           <button
             id="shell-toggle-fullscreen"
             onClick={toggleDisplayMode}
-            className="p-1 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-400 hover:text-white transition-colors ml-1"
+            className="p-1 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-400 hover:text-white transition-colors"
             title="Toggle Edge-to-Edge View"
           >
             <Maximize2 className="w-3.5 h-3.5" />
@@ -197,15 +202,36 @@ export const AndroidAppShell: React.FC<AndroidAppShellProps> = ({
               )}
             </div>
 
-            {/* Center: Android Camera Cutout / Punch-Hole */}
-            <div className="absolute left-1/2 -translate-x-1/2 top-1.5 flex items-center justify-center">
+            {/* Center: Android Camera Cutout / Punch-Hole + Quick Install Pill */}
+            <div className="absolute left-1/2 -translate-x-1/2 top-1 flex items-center justify-center gap-2">
               <div className="w-3.5 h-3.5 rounded-full bg-black border border-neutral-800 shadow-inner flex items-center justify-center">
                 <div className="w-1.5 h-1.5 rounded-full bg-neutral-900 border border-neutral-700/60" />
               </div>
+
+              {/* Status Bar Install Pill */}
+              <button
+                id="statusbar-install-pill-btn"
+                onClick={onTriggerInstallPwa || onOpenAndroidInfo}
+                className="hidden sm:flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-[9px] shadow-sm animate-pulse active:scale-95 transition-all"
+                title="Install Real Drum on Android"
+              >
+                <Download className="w-2.5 h-2.5 stroke-[2.5]" />
+                <span>Install</span>
+              </button>
             </div>
 
-            {/* Right: Connectivity & Battery Icons */}
-            <div className="flex items-center gap-2">
+            {/* Right: Connectivity & Battery Icons + Install Trigger */}
+            <div className="flex items-center gap-1.5">
+              {/* Mobile Install Button in Status Bar */}
+              <button
+                id="statusbar-mobile-install-btn"
+                onClick={onTriggerInstallPwa || onOpenAndroidInfo}
+                className="sm:hidden flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500 text-black font-extrabold text-[9px] shadow-sm"
+              >
+                <Download className="w-2.5 h-2.5" />
+                <span>Install</span>
+              </button>
+
               {/* Quick Mobile Orientation toggle in status bar */}
               <button
                 onClick={toggleOrientation}
@@ -223,6 +249,49 @@ export const AndroidAppShell: React.FC<AndroidAppShellProps> = ({
               </div>
             </div>
           </div>
+
+          {/* TOP ANDROID INSTALL NOTIFICATION BANNER (HIGH PROMINENCE) */}
+          {showInstallBanner && (
+            <div className="relative z-30 w-full bg-gradient-to-r from-emerald-950 via-neutral-900 to-emerald-950 border-b border-emerald-500/50 px-3 py-1.5 flex items-center justify-between text-xs gap-2 shrink-0 shadow-md">
+              <div className="flex items-center gap-2 overflow-hidden">
+                <span className="p-1 rounded-lg bg-emerald-500 text-black font-black text-xs shrink-0 animate-bounce">
+                  <Smartphone className="w-3.5 h-3.5" />
+                </span>
+                <div className="flex items-center gap-1.5 truncate">
+                  <span className="font-extrabold text-white text-[11px] sm:text-xs">Install Android App</span>
+                  <span className="hidden sm:inline text-[10px] text-emerald-400 font-mono">• WebAPK • Zero Latency</span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-1.5 shrink-0">
+                <button
+                  id="banner-install-app-btn"
+                  onClick={onTriggerInstallPwa || onOpenAndroidInfo}
+                  className="px-3 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-black text-[11px] shadow-md shadow-emerald-500/30 flex items-center gap-1 active:scale-95 transition-all"
+                >
+                  <Download className="w-3.5 h-3.5 stroke-[2.5]" />
+                  <span>Install Now</span>
+                </button>
+
+                <button
+                  id="banner-scan-qr-btn"
+                  onClick={onOpenAndroidInfo}
+                  className="hidden xs:flex px-2 py-1 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-emerald-300 hover:text-white font-bold text-[11px] items-center gap-1 border border-emerald-500/30 transition-colors"
+                >
+                  <span>QR Code</span>
+                </button>
+
+                <button
+                  id="banner-dismiss-install-btn"
+                  onClick={() => setShowInstallBanner(false)}
+                  className="p-1 rounded-lg hover:bg-neutral-800 text-neutral-400 hover:text-white text-xs transition-colors"
+                  title="Dismiss banner"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* INNER APP VIEWPORT */}
           <div className="relative flex-1 w-full h-[calc(100%-54px)] overflow-hidden flex flex-col bg-neutral-950">
