@@ -1,0 +1,178 @@
+@import "tailwindcss";
+
+@layer base {
+  html, body, #root {
+    width: 100%;
+    height: 100%;
+    overscroll-behavior: none;
+    overflow: hidden;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    touch-action: manipulation;
+  }
+}
+
+/* ==========================================================================
+   REALISTIC CYMBAL STYLING (B20 Bronze, Anisotropic Sheen, Hammered Dimples)
+   ========================================================================== */
+
+.cymbal-surface {
+  position: relative;
+  background: radial-gradient(
+    circle at 50% 50%,
+    #fef08a 0%,
+    #fde047 6%,
+    #eab308 14%,
+    #ca8a04 26%,
+    #a16207 42%,
+    #eab308 58%,
+    #854d0e 74%,
+    #ca8a04 88%,
+    #713f12 100%
+  );
+  box-shadow: 
+    0 14px 35px -5px rgba(0, 0, 0, 0.85),
+    inset 0 0 15px rgba(254, 240, 138, 0.45),
+    inset 0 0 35px rgba(113, 63, 18, 0.8);
+}
+
+/* Authentic concentric micro-lathing groove rings */
+.cymbal-grooves {
+  background-image: repeating-radial-gradient(
+    circle at center,
+    transparent 0,
+    transparent 2.5px,
+    rgba(113, 63, 18, 0.22) 3px,
+    transparent 3.5px
+  );
+}
+
+/* Turkish hand-hammered dimple marks across the cymbal bow */
+.cymbal-hammered {
+  background-image: 
+    radial-gradient(circle at 30% 25%, rgba(60, 30, 5, 0.25) 1.5px, transparent 3px),
+    radial-gradient(circle at 70% 35%, rgba(60, 30, 5, 0.28) 2px, transparent 3.5px),
+    radial-gradient(circle at 45% 75%, rgba(60, 30, 5, 0.25) 1.5px, transparent 3px),
+    radial-gradient(circle at 80% 70%, rgba(60, 30, 5, 0.28) 2px, transparent 3.5px),
+    radial-gradient(circle at 20% 65%, rgba(60, 30, 5, 0.22) 1.5px, transparent 3px),
+    repeating-radial-gradient(circle at center, transparent 0, transparent 2.5px, rgba(113, 63, 18, 0.2) 3px, transparent 3.5px);
+}
+
+/* Anisotropic light reflection sheen (dual-wedge specular flare) */
+.cymbal-sheen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: conic-gradient(
+    from 35deg at 50% 50%,
+    rgba(255, 255, 255, 0) 0deg,
+    rgba(255, 255, 255, 0.32) 40deg,
+    rgba(255, 255, 255, 0) 80deg,
+    rgba(255, 255, 255, 0) 180deg,
+    rgba(255, 255, 255, 0.32) 220deg,
+    rgba(255, 255, 255, 0) 260deg,
+    rgba(255, 255, 255, 0) 360deg
+  );
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+/* ==========================================================================
+   REALISTIC DRUMHEADS & DIE-CAST CHROME RIMS
+   ========================================================================== */
+
+/* Coated White Snare Drumhead (Remo Ambassador textured grain) */
+.drumhead-snare {
+  background: radial-gradient(
+    circle at 48% 48%,
+    #ffffff 0%,
+    #f8f9fa 40%,
+    #eceef1 70%,
+    #d1d5db 90%,
+    #9ca3af 100%
+  );
+  box-shadow: 
+    inset 0 0 28px rgba(0, 0, 0, 0.35),
+    inset 0 2px 8px rgba(255, 255, 255, 0.95);
+}
+
+/* Clear 2-Ply Tom Drumheads with oil reflection & pinstripe dampening */
+.drumhead-tom {
+  background: radial-gradient(
+    circle at 45% 42%,
+    #f3f4f6 0%,
+    #e5e7eb 45%,
+    #d1d5db 80%,
+    #9ca3af 100%
+  );
+  box-shadow: 
+    inset 0 0 30px rgba(0, 0, 0, 0.32),
+    inset 0 3px 10px rgba(255, 255, 255, 0.85);
+}
+
+/* 22" Bass Drum Resonant Front Head */
+.drumhead-kick {
+  background: radial-gradient(
+    circle at 50% 50%,
+    #18181b 0%,
+    #131316 55%,
+    #09090b 85%,
+    #040405 100%
+  );
+  box-shadow: 
+    inset 0 0 45px rgba(0, 0, 0, 0.95),
+    0 20px 45px -8px rgba(0, 0, 0, 0.95);
+}
+
+/* Heavy-Duty Die-Cast Triple Flanged Chrome Rim */
+.chrome-diecast-rim {
+  border: 4.5px solid #94a3b8;
+  box-shadow: 
+    0 0 0 2px #1e293b,
+    0 0 0 4px #475569,
+    inset 0 0 0 2.5px #f1f5f9,
+    inset 0 0 0 4px #64748b,
+    0 12px 24px -4px rgba(0, 0, 0, 0.85);
+}
+
+/* Bass Drum Wooden Hoop with Inlay Ring */
+.bass-wooden-hoop {
+  border: 7px solid #27272a;
+  box-shadow: 
+    0 0 0 3px #18181b,
+    0 0 0 5px #52525b,
+    inset 0 0 0 3px #09090b,
+    0 18px 40px -6px rgba(0, 0, 0, 0.95);
+}
+
+/* Stage Carpet Texture */
+.stage-carpet {
+  background-color: #0c0d10;
+  background-image: 
+    radial-gradient(circle at 50% 45%, rgba(20, 24, 33, 0.8) 0%, rgba(8, 9, 12, 0.98) 100%),
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.015) 0, rgba(255, 255, 255, 0.015) 2px, transparent 2px, transparent 6px),
+    repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.015) 0, rgba(255, 255, 255, 0.015) 2px, transparent 2px, transparent 6px);
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #09090b;
+}
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
+}
+
+

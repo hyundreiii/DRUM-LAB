@@ -1,0 +1,6 @@
+{
+  "name": "Digital Real Drum",
+  "description": "Realistic Android mobile touchscreen drum kit simulator with responsive multi-touch percussion, pro sound kits, rhythm academy lessons, haptics, and metronome.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
